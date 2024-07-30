@@ -52,6 +52,7 @@ struct DashboardNewArrivalView: View {
                                 
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(item.name)
+                                        .fontWeight(.medium)
                                         .font(.subheadline)
                                         .lineLimit(2)
                                     
