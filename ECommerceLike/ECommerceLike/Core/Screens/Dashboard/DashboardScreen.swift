@@ -20,6 +20,7 @@ struct DashboardScreen: View {
         "https://c8.alamy.com/comp/2KE4X1X/vinnitsa-ukraine-october-25-2022-asics-sport-brand-logo-icon-vector-editorial-illustration-2KE4X1X.jpg",
         "https://static.vecteezy.com/system/resources/previews/017/780/591/non_2x/dumbbell-icon-simple-style-fitness-sport-company-big-sale-poster-background-symbol-fitness-sport-logo-design-element-t-shirt-printing-for-sticker-vector.jpg"
     ]
+    @State private var products = Product.dummyData
     
     var body: some View {
         GeometryReader { geo in
@@ -37,6 +38,8 @@ struct DashboardScreen: View {
                     
                     DashboardBrandCarousel(brandLogos: brandLogos, screenSize: geo.size)
                         .padding(.horizontal)
+                    
+                    DashboardNewArrivalView(products: products, size: geo.size)
                 }
             }
         }
@@ -46,3 +49,4 @@ struct DashboardScreen: View {
 #Preview {
     DashboardScreen()
 }
+

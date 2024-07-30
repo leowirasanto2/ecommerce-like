@@ -39,7 +39,7 @@ struct DashboardBrandCarousel: View {
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(.gray.opacity(0.2))
-                                .frame(width: screenSize.width / 3.3, height: screenSize.width / 4)
+                                .frame(width: screenSize.width / 4, height: screenSize.width / 5)
                                 .overlay {
                                     AsyncImage(url: URL(string: url)) { image in
                                         image.image?.resizable()
