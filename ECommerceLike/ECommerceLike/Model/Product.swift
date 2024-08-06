@@ -12,6 +12,7 @@ struct Product {
     var name: String
     var imageUrl: String
     var price: Double
+    var brand: Brand?
     
     func formattedPrice() -> String {
         let formatter = NumberFormatter()

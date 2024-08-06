@@ -8,31 +8,36 @@
 import SwiftUI
 
 struct DashboardSearchView: View {
-    @Binding var searchText: String
+    @State var height: CGFloat = 60
+    var searchbarTapped: () -> ()
+    var filterTapped: () -> ()
     
     var body: some View {
         HStack(alignment: .center) {
-            Image(systemName: "magnifyingglass")
-                .imageScale(.large)
-                .foregroundStyle(.gray.opacity(0.5))
-            
-            TextField("Search product", text: $searchText)
+            Group {
+                Image(systemName: "magnifyingglass")
+                    .imageScale(.large)
+                    .foregroundStyle(.gray.opacity(0.5))
+                
+                Text("Type to search product").foregroundStyle(.gray.opacity(0.5))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            }
+            .onTapGesture(perform: searchbarTapped)
             
             Divider()
             
-            Button {
-                
-            } label: {
+            Button(action: filterTapped, label: {
                 Image(systemName: "slider.horizontal.3")
                     .imageScale(.large)
-            }
+            })
             .foregroundStyle(.black)
         }
         .padding()
+        .frame(height: height)
         .background(.gray.opacity(0.05))
     }
 }
 
 #Preview {
-    DashboardSearchView(searchText: .constant(""))
+    DashboardSearchView {} filterTapped: {}
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DashboardBrandCarousel: View {
-    var brandLogos = [String]()
+    var brandLogos = [String?]()
     var screenSize: CGSize = .zero
     
     var body: some View {
@@ -41,7 +41,7 @@ struct DashboardBrandCarousel: View {
                                 .fill(.gray.opacity(0.2))
                                 .frame(width: screenSize.width / 4, height: screenSize.width / 5)
                                 .overlay {
-                                    AsyncImage(url: URL(string: url)) { image in
+                                    AsyncImage(url: URL(string: url ?? "")) { image in
                                         image.image?.resizable()
                                             .clipShape(RoundedRectangle(cornerRadius: 10))
                                     }
