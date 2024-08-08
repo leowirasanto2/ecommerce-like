@@ -12,36 +12,57 @@ struct SearchScreen: View {
     var showFilter = true
     @State private var keyword = ""
     @State private var parameters: [String: Any] = [:]
+    @State private var searchResult: [Product] = []
+    @State private var isSearching = false
     @Environment(\.dismiss) private var dismiss
     var onCancelled: () -> ()
     
     var body: some View {
         GeometryReader { geo in
-            ScrollView {
-                VStack(alignment: .leading) {
-                    SearchBarWidget(searchState: initialState, showFilter: showFilter) { config in
-                        keyword = config.keyword ?? ""
-                        parameters = config.parameters
-                    } onCancelled: {
-                        dismiss()
-                    }
-                    .padding(.horizontal)
-                    
-                    Text(keyword)
-                    
-                    ForEach(Array(parameters.keys), id: \.self) { key in
-                        if let brand = parameters[key] as? Brand {
-                            Text(brand.name)
+            ZStack {
+                
+                // Content
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        SearchBarWidget(searchState: initialState, showFilter: showFilter) { config in
+                            keyword = config.keyword ?? ""
+                            parameters = config.parameters
+                            toggleLoading(true)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                self.searchResult = Product.dummyData
+                                self.toggleLoading(false)
+                            }
+                        } onCancelled: {
+                            dismiss()
                         }
-                        if let text = parameters[key] as? String {
-                            Text(text)
+                        .padding(.horizontal)
+                        
+                        if !searchResult.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Search result of \"\(keyword)\"")
+                                    .font(.subheadline)
+                                
+                                SearchResultView(products: searchResult, screenSize: geo.size)
+                            }
+                            .padding()
                         }
                     }
+                    .padding(.top)
                 }
-                .padding(.top)
+                
+                // Loader
+                if isSearching {
+                    LoadingView(searchText: "Searching, please wait...")
+                }
             }
         }
         .navigationBarBackButtonHidden()
+    }
+    
+    func toggleLoading(_ active: Bool) {
+        withAnimation {
+            isSearching = active
+        }
     }
 }
 
