@@ -23,7 +23,7 @@ struct ProductGridContainer: View {
                             VStack(alignment: .leading) {
                                 Rectangle()
                                     .fill(.clear)
-                                    .frame(width: .infinity, height: screenSize.width * 0.5)
+                                    .frame(width: .infinity, height: screenSize.width * 0.45)
                                     .overlay {
                                         AsyncImage(url: URL(string: item.imageUrl)) { img in
                                             img.image?
@@ -65,6 +65,11 @@ struct ProductGridContainer: View {
 
 #Preview {
     GeometryReader { geo in
-        ProductGridContainer(screenSize: geo.size, products: Product.dummyData) { product in }
+        ProductGridContainer(screenSize: geo.size, columns: [
+            GridItem(.flexible(minimum: 90, maximum: geo.size.width)),
+                GridItem(.flexible(minimum: 90, maximum: geo.size.width)),
+                GridItem(.flexible(minimum: 90, maximum: geo.size.width))
+        ], products: Product.dummyData) { product in }
+            .padding()
     }
 }

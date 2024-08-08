@@ -161,6 +161,41 @@ struct ProductDetailScreen: View {
                                 .frame(height: 200, alignment: .top)
                             }
                             .padding(.horizontal)
+                            
+                            HStack {
+                                Button {
+                                    isLoading = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        self.isLoading = false
+                                    }
+                                } label: {
+                                    Text("Add to cart")
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(.white)
+                                        .foregroundStyle(.black)
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.black, lineWidth: 1)
+                                }
+                                
+                                Button {
+                                    isLoading = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        self.isLoading = false
+                                    }
+                                } label: {
+                                    Text("Buy now")
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(.black)
+                                        .foregroundStyle(.white)
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .padding(.horizontal)
                         }
                     }
                 }
@@ -168,12 +203,6 @@ struct ProductDetailScreen: View {
                 if isLoading {
                     LoadingView(searchText: "Fetching product details...")
                 }
-            }
-        }
-        .onAppear {
-            isLoading = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.isLoading = false
             }
         }
         .navigationBarBackButtonHidden()
