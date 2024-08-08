@@ -9,8 +9,7 @@ import SwiftUI
 
 struct DashboardSearchView: View {
     @State var height: CGFloat = 60
-    var searchbarTapped: () -> ()
-    var filterTapped: () -> ()
+    var searchbarTapped: (_ withFilter: Bool) -> ()
     
     var body: some View {
         HStack(alignment: .center) {
@@ -22,14 +21,18 @@ struct DashboardSearchView: View {
                 Text("Type to search product").foregroundStyle(.gray.opacity(0.5))
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             }
-            .onTapGesture(perform: searchbarTapped)
+            .onTapGesture {
+                searchbarTapped(false)
+            }
             
             Divider()
             
-            Button(action: filterTapped, label: {
+            Button {
+                searchbarTapped(true)
+            } label: {
                 Image(systemName: "slider.horizontal.3")
                     .imageScale(.large)
-            })
+            }
             .foregroundStyle(.black)
         }
         .padding()
@@ -39,5 +42,5 @@ struct DashboardSearchView: View {
 }
 
 #Preview {
-    DashboardSearchView {} filterTapped: {}
+    DashboardSearchView { withFilter in }
 }

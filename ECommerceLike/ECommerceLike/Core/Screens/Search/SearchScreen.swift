@@ -12,6 +12,7 @@ struct SearchScreen: View {
     var showFilter = true
     @State private var keyword = ""
     @State private var parameters: [String: Any] = [:]
+    @Environment(\.dismiss) private var dismiss
     var onCancelled: () -> ()
     
     var body: some View {
@@ -22,7 +23,7 @@ struct SearchScreen: View {
                         keyword = config.keyword ?? ""
                         parameters = config.parameters
                     } onCancelled: {
-                        onCancelled()
+                        dismiss()
                     }
                     .padding(.horizontal)
                     
@@ -40,6 +41,7 @@ struct SearchScreen: View {
                 .padding(.top)
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

@@ -13,8 +13,7 @@ struct DashboardScreen: View {
     @State private var searchText = ""
     @State private var brands = Brand.dummyBrands
     @State private var products = Product.dummyData
-    @State private var showSearchSheet = false
-    @State private var showFilter = false
+    @EnvironmentObject var router: Router
     
     var body: some View {
         GeometryReader { geo in
@@ -22,12 +21,9 @@ struct DashboardScreen: View {
                 VStack(spacing: 32) {
                     DashboardHeaderView()
                         .padding(.horizontal)
-                    DashboardSearchView {
-                        showSearchSheet = true
-                        showFilter = false
-                    } filterTapped: {
-                        showFilter = true
-                        showSearchSheet = true
+                    
+                    DashboardSearchView { withFilter in
+                        router.navigateTo(.searchScreen(showFilter: withFilter))
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.horizontal)
@@ -41,14 +37,6 @@ struct DashboardScreen: View {
                     DashboardNewArrivalView(products: products, size: geo.size)
                 }
             }
-            .fullScreenCover(isPresented: $showSearchSheet, onDismiss: {
-                showFilter = false
-            }, content: {
-                SearchScreen(initialState: .focused, showFilter: showFilter) {
-                    showSearchSheet = false
-                    print(showSearchSheet)
-                }
-            })
         }
     }
 }
@@ -56,6 +44,7 @@ struct DashboardScreen: View {
 #Preview {
     NavigationStack {
         DashboardScreen()
+            .environmentObject(Router())
     }
 }
 
