@@ -10,6 +10,8 @@ import SwiftUI
 struct DashboardNewArrivalView: View {
     var products: [Product] = []
     var size: CGSize = .zero
+    var didTap: (Product) -> ()
+    var viewAll: () -> ()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -22,7 +24,7 @@ struct DashboardNewArrivalView: View {
                 Spacer()
                 
                 Button {
-                    
+                    viewAll()
                 } label: {
                     Text("View all")
                         .font(.headline)
@@ -31,49 +33,16 @@ struct DashboardNewArrivalView: View {
                 }.hidden()
             }
             
-            LazyVGrid(columns: [
-                GridItem(.flexible(minimum: size.width / 2.3, maximum: size.width / 2)),
-                GridItem(.flexible(minimum: size.width / 2.3, maximum: size.width / 2))
-            ] , spacing: 16) {
-                    ForEach(products, id: \.id) { item in
-                        Button {
-                            
-                        } label: {
-                            VStack(alignment: .leading) {
-                                AsyncImage(url: URL(string: item.imageUrl)) { img in
-                                    img
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: .infinity, height: size.width / 2)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                } placeholder: {
-                                    Color.clear
-                                }
-                                
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(item.name)
-                                        .fontWeight(.medium)
-                                        .font(.subheadline)
-                                        .lineLimit(2)
-                                    
-                                    Text(item.formattedPrice())
-                                        .font(.footnote)
-                                        .lineLimit(1)
-                                }
-                                .foregroundStyle(.black)
-                                .multilineTextAlignment(.leading)
-                                .frame(width: .infinity, alignment: .leading)
-                            }
-                            .frame(width: size.width / 2.3, height: size.width / 1.4, alignment: .leading)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        }
-                    }
-                }
+            ProductGridContainer(screenSize: size, products: products, didTap: didTap)
         }
         .padding(.horizontal)
     }
 }
 
 #Preview {
-    DashboardNewArrivalView()
+    ScrollView {
+        GeometryReader { geo in
+            DashboardNewArrivalView(products: Product.dummyData, size: geo.size) { product in } viewAll: { }
+        }
+    }
 }

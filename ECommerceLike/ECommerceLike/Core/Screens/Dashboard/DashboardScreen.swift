@@ -34,7 +34,9 @@ struct DashboardScreen: View {
                     DashboardBrandCarousel(brandLogos: brands.filter {$0.id != "brand-default" }.map(\.imageUrl), screenSize: geo.size)
                         .padding(.horizontal)
                     
-                    DashboardNewArrivalView(products: products, size: geo.size)
+                    DashboardNewArrivalView(products: products, size: geo.size) { product in
+                        router.navigateTo(.productDetail(productId: product.id))
+                    } viewAll: {}
                 }
             }
         }

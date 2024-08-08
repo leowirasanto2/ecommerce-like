@@ -15,6 +15,7 @@ struct SearchScreen: View {
     @State private var searchResult: [Product] = []
     @State private var isSearching = false
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var router: Router
     var onCancelled: () -> ()
     
     var body: some View {
@@ -42,7 +43,9 @@ struct SearchScreen: View {
                                 Text("Search result of \"\(keyword)\"")
                                     .font(.subheadline)
                                 
-                                SearchResultView(products: searchResult, screenSize: geo.size)
+                                SearchResultView(products: searchResult, screenSize: geo.size) { product in
+                                    router.navigateTo(.productDetail(productId: product.id))
+                                }
                             }
                             .padding()
                         }
@@ -68,4 +71,5 @@ struct SearchScreen: View {
 
 #Preview {
     SearchScreen {}
+        .environmentObject(Router())
 }

@@ -20,7 +20,7 @@ struct ContentView: View {
                             router.back()
                         }
                     case .productDetail(let productId):
-                        Text("Product detail screen with id \(productId)")
+                        ProductDetailScreen()
                     }
                 }
         }
