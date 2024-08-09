@@ -18,7 +18,7 @@ struct SearchBarWidget: View {
     @State private var minPrice: String = ""
     @State private var maxPrice: String = ""
     @State var availableBrands: [Brand] = Brand.dummyBrands
-    @State var searchState: SearchBarWidgetState = .focused
+    @State var searchState: SearchBarWidgetState = .initial
     @State var searchBarHeight: CGFloat = 60
     @State var showFilter: Bool = true
     @FocusState private var focusedField: FocusedField?
@@ -57,7 +57,7 @@ struct SearchBarWidget: View {
                         Image(systemName: "slider.horizontal.3")
                             .imageScale(.medium)
                     }
-                    .foregroundStyle(.black)
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
                 }
                 .padding()
                 .frame(height: searchBarHeight)
@@ -82,7 +82,7 @@ struct SearchBarWidget: View {
                                     )
                                 )
                             }
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                         
                         Button {
                             withAnimation {
@@ -101,7 +101,7 @@ struct SearchBarWidget: View {
                         } label: {
                             Image(systemName: parametersExists() ? "slider.horizontal.2.gobackward" : "slider.horizontal.3")
                                 .imageScale(.medium)
-                                .foregroundStyle(parametersExists() ? .red : .black)
+                                .foregroundStyle(parametersExists() ? .red : Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
                         }
                         
                         // MARK: - Cancel search
@@ -120,13 +120,13 @@ struct SearchBarWidget: View {
                             Image(systemName: "xmark")
                                 .imageScale(.medium)
                         }
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
                     }
                     .padding(.horizontal)
                     .frame(height: searchBarHeight)
                     .background()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .shadow(radius: 5)
+                    .shadow(color: .gray.opacity(0.5), radius: 5)
                     
                     if showFilter {
                         VStack {
@@ -176,9 +176,9 @@ struct SearchBarWidget: View {
                             }
                         }
                         .padding()
-                        .background(.white)
+                        .background(Color.dynamic(light: .white, dark: .black))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .shadow(radius: 5)
+                        .shadow(color: .gray.opacity(0.5), radius: 5)
                     }
                     
                     Button {
@@ -191,9 +191,9 @@ struct SearchBarWidget: View {
                     }
                     .padding(8)
                     .background()
-                    .foregroundStyle(.black)
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                     .clipShape(RoundedRectangle(cornerRadius: .infinity))
-                    .shadow(radius: 5)
+                    .shadow(color: .gray.opacity(0.5), radius: 5)
                 }
                 .onAppear {
                     focusedField = .searchBar
@@ -223,7 +223,7 @@ struct SearchBarWidget: View {
                         Image(systemName: "xmark")
                             .imageScale(.medium)
                     }
-                    .foregroundStyle(.black)
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
                 }
                 .padding()
                 .frame(height: searchBarHeight)
