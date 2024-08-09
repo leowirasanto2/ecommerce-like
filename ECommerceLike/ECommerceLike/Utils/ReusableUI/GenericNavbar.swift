@@ -10,6 +10,7 @@ import SwiftUI
 typealias GenericNavBarButtonConfig = (Image, () -> ())
 
 struct GenericNavbar: View {
+    @Environment(\.colorScheme) var colorScheme
     var iconSize: CGFloat = 38 //38 is default
     var title: String?
     var leftButton: GenericNavBarButtonConfig?
@@ -30,7 +31,7 @@ struct GenericNavbar: View {
                         }
                         .frame(width: iconSize, height: iconSize)
                 }
-                .foregroundStyle(.black)
+                .foregroundStyle(colorScheme == .dark ? .white : .black)
                 Spacer()
             }
             
@@ -54,7 +55,7 @@ struct GenericNavbar: View {
                         }
                         .frame(width: iconSize, height: iconSize)
                 }
-                .foregroundStyle(.black)
+                .foregroundStyle(colorScheme == .dark ? .white : .black)
             }
         }
         .padding()
@@ -62,5 +63,5 @@ struct GenericNavbar: View {
 }
 
 #Preview {
-    GenericNavbar()
+    GenericNavbar(iconSize: 38, title: "Title", leftButton: (Image(systemName: "square.and.arrow.up"), {}), rightButton: nil)
 }

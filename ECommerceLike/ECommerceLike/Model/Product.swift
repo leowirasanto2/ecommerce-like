@@ -113,6 +113,7 @@ extension Product {
             name: "Be Enough For Yourself Sticker",
             imageUrl: "https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/c08423f2-fd4b-4695-8ac0-6ebfaac41d5f/nike-lookbook.jpg",
             price: 67000,
+            discountPrice: 60000,
             brand: .dummyBrands[1],
             details: .dummyDetails,
             availableSize: [.L, .M, .XL],

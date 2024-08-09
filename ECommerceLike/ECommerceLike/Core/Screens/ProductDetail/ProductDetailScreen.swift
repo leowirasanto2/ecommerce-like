@@ -11,6 +11,7 @@ struct ProductDetailScreen: View {
     var selectedProduct: Product?
     @State var iconSize: CGFloat = 38
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     @State private var selectedSize: ProductSize = .L
     @State private var isLoading = false
     @State private var isShowingMoreDetails = false
@@ -65,10 +66,10 @@ struct ProductDetailScreen: View {
                             
                             HStack {
                                 if let discountPrice = selectedProduct?.discountPrice {
-                                    Text("$\(discountPrice)")
+                                    Text("\(discountPrice.usdCurrencyFormat)")
                                         .font(.headline)
                                     
-                                    Text("$\(selectedProduct?.price ?? 0.0)")
+                                    Text("\((selectedProduct?.price ?? 0.0).usdCurrencyFormat)")
                                         .font(.subheadline)
                                         .fontWeight(.regular)
                                         .strikethrough()
@@ -84,11 +85,12 @@ struct ProductDetailScreen: View {
                                         .background(.green.opacity(0.3))
                                         .clipShape(RoundedRectangle(cornerRadius: 5))
                                 } else {
-                                    Text("$\(selectedProduct?.price ?? 0.0)")
+                                    Text("\((selectedProduct?.price ?? 0.0).usdCurrencyFormat)")
                                         .font(.headline)
+                                    
+                                    Spacer()
                                 }
                                 
-                                Spacer()
                             }
                             .padding(.horizontal)
                             
@@ -140,6 +142,7 @@ struct ProductDetailScreen: View {
                                         .disabled(selectedProduct?.availableSize.contains(item) == false)
                                         .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .foregroundStyle(sizeButtonForegroundColor(item))
+                                        .opacity(sizeButtonOpacity(item))
                                     }
                                 }
                             }
@@ -156,12 +159,12 @@ struct ProductDetailScreen: View {
                                             VStack {
                                                 Text(item.title)
                                                 Rectangle()
-                                                    .fill(item == selectedDetailsTab ? .black : .gray.opacity(0.2))
+                                                    .fill(item == selectedDetailsTab ? (colorScheme == .dark ? .white : .black) : .gray.opacity(colorScheme == .dark ? 0.8 : 0.2))
                                                     .frame(height: 1)
                                             }
                                             .frame(maxWidth: .infinity)
                                         }
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(colorScheme == .dark ? .white : .black)
                                     }
                                 }
                                 
@@ -248,6 +251,10 @@ struct ProductDetailScreen: View {
                                         .foregroundStyle(.white)
                                 }
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(colorScheme == .dark ? .white : .black, lineWidth: 1)
+                                }
                             }
                             .padding(.horizontal)
                         }
@@ -261,9 +268,6 @@ struct ProductDetailScreen: View {
         }
         .sheet(isPresented: $isShowingMoreDetails, content: {
             VStack(spacing: 16) {
-                RoundedRectangle(cornerRadius: 25.0)
-                    .fill(.gray)
-                    .frame(width: 40, height: 4)
                 ScrollView {
                     switch selectedDetailsTab {
                     case .descriptions:
@@ -275,7 +279,7 @@ struct ProductDetailScreen: View {
                     }
                 }
             }
-            .presentationDetents([.medium])
+            .presentationDetents([.medium, .large])
             .padding()
         })
         .navigationBarBackButtonHidden()
@@ -283,22 +287,29 @@ struct ProductDetailScreen: View {
     
     private func sizeButtonBackgroundColor(_ itemSize: ProductSize) -> Color {
         if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
-            return .black.opacity(0.2)
+            return colorScheme == .dark ? .gray.opacity(0.5) : .black.opacity(0.2)
         } else if selectedSize == itemSize {
-            return .black
+            return colorScheme == .dark ? .green : .black
         } else {
-            return .gray.opacity(0.1)
+            return colorScheme == .dark ? .gray : .gray.opacity(0.1)
         }
     }
     
     private func sizeButtonForegroundColor(_ itemSize: ProductSize) -> Color {
         if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
-            return .black.opacity(0.3)
+            return colorScheme == .dark ? .white : .black.opacity(0.3)
         } else if selectedSize == itemSize {
             return .white
         } else {
             return .black
         }
+    }
+    
+    private func sizeButtonOpacity(_ itemSize: ProductSize) -> CGFloat {
+        if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
+            return 0.3
+        }
+        return 1
     }
 }
 
