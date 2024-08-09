@@ -57,11 +57,11 @@ struct SearchBarWidget: View {
                         Image(systemName: "slider.horizontal.3")
                             .imageScale(.medium)
                     }
-                    .foregroundStyle(Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                 }
                 .padding()
                 .frame(height: searchBarHeight)
-                .background(.gray.opacity(0.05))
+                .background(Color.dynamic(light: .gray.opacity(0.05), dark: .white.opacity(0.15)))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             case .focused:
                 // Focused
@@ -101,7 +101,7 @@ struct SearchBarWidget: View {
                         } label: {
                             Image(systemName: parametersExists() ? "slider.horizontal.2.gobackward" : "slider.horizontal.3")
                                 .imageScale(.medium)
-                                .foregroundStyle(parametersExists() ? .red : Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
+                                .foregroundStyle(parametersExists() ? .red : Color.dynamic(light: .black, dark: .white))
                         }
                         
                         // MARK: - Cancel search
@@ -120,7 +120,7 @@ struct SearchBarWidget: View {
                             Image(systemName: "xmark")
                                 .imageScale(.medium)
                         }
-                        .foregroundStyle(Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
+                        .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                     }
                     .padding(.horizontal)
                     .frame(height: searchBarHeight)
@@ -223,11 +223,11 @@ struct SearchBarWidget: View {
                         Image(systemName: "xmark")
                             .imageScale(.medium)
                     }
-                    .foregroundStyle(Color.dynamic(light: .black, dark: .gray.opacity(0.5)))
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                 }
                 .padding()
                 .frame(height: searchBarHeight)
-                .background(.gray.opacity(0.05))
+                .background(Color.dynamic(light: .gray.opacity(0.05), dark: .white.opacity(0.15)))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .onTapGesture {
                     withAnimation {

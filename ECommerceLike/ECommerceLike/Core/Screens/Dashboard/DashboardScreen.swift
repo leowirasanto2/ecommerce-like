@@ -31,7 +31,7 @@ struct DashboardScreen: View {
                     ShuffleCard(height: geo.size.width / 2)
                         .padding(.horizontal)
                     
-                    DashboardBrandCarousel(brandLogos: brands.filter {$0.id != "brand-default" }.map(\.imageUrl), screenSize: geo.size)
+                    DashboardBrandCarousel(brands: brands.filter {$0.id != "brand-default" }, screenSize: geo.size)
                         .padding(.horizontal)
                     
                     DashboardNewArrivalView(products: products, size: geo.size) { product in

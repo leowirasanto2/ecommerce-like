@@ -33,11 +33,11 @@ struct DashboardSearchView: View {
                 Image(systemName: "slider.horizontal.3")
                     .imageScale(.large)
             }
-            .foregroundStyle(.black)
+            .foregroundStyle(Color.dynamic(light: .black, dark: .white))
         }
         .padding()
         .frame(height: height)
-        .background(.gray.opacity(0.05))
+        .background(Color.dynamic(light: .gray.opacity(0.05), dark: .white.opacity(0.1)))
     }
 }
 

@@ -47,7 +47,7 @@ struct DashboardHeaderView: View {
                     }
                     .frame(width: avatarSize, height: avatarSize)
             }
-            .foregroundStyle(.black)
+            .foregroundStyle(Color.dynamic(light: .black, dark: .white))
             
             Button {
                 
@@ -61,7 +61,7 @@ struct DashboardHeaderView: View {
                     }
                     .frame(width: avatarSize, height: avatarSize)
             }
-            .foregroundStyle(.black)
+            .foregroundStyle(Color.dynamic(light: .black, dark: .white))
         }
     }
 }

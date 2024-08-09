@@ -19,7 +19,7 @@ struct DashboardNewArrivalView: View {
                 Text("New arrivals")
                     .font(.headline)
                     .fontWeight(.medium)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                 
                 Spacer()
                 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DashboardBrandCarousel: View {
-    var brandLogos = [String?]()
+    var brands: [Brand] = []
     var screenSize: CGSize = .zero
     
     var body: some View {
@@ -17,7 +17,7 @@ struct DashboardBrandCarousel: View {
                 Text("Shop by brand category")
                     .font(.headline)
                     .fontWeight(.medium)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                 
                 Spacer()
                 
@@ -33,7 +33,7 @@ struct DashboardBrandCarousel: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(brandLogos, id: \.self) { url in
+                    ForEach(brands, id: \.id) { item in
                         Button {
                             
                         } label: {
@@ -41,7 +41,7 @@ struct DashboardBrandCarousel: View {
                                 .fill(.gray.opacity(0.2))
                                 .frame(width: screenSize.width / 4, height: screenSize.width / 5)
                                 .overlay {
-                                    AsyncImage(url: URL(string: url ?? "")) { image in
+                                    AsyncImage(url: URL(string: item.imageUrl ?? "")) { image in
                                         image.image?.resizable()
                                             .clipShape(RoundedRectangle(cornerRadius: 10))
                                     }
@@ -56,5 +56,5 @@ struct DashboardBrandCarousel: View {
 }
 
 #Preview {
-    DashboardBrandCarousel()
+    DashboardBrandCarousel(brands: Brand.dummyBrands, screenSize: .init(width: 300, height: 800))
 }

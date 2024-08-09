@@ -44,7 +44,7 @@ struct ProductGridContainer: View {
                                         .font(.footnote)
                                         .lineLimit(1)
                                 }
-                                .foregroundStyle(.black)
+                                .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                                 .multilineTextAlignment(.leading)
                                 .frame(width: .infinity, alignment: .leading)
                             }

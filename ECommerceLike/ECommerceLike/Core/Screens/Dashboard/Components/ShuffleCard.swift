@@ -15,7 +15,7 @@ struct ShuffleCard: View {
             
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .fill(.black)
+                .fill(Color.dynamic(light: .black, dark: .gray))
                 .frame(height: height)
                 .overlay {
                     Text("Shuffle card container")
