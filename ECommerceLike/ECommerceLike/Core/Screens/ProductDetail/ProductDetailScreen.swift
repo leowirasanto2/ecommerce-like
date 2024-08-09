@@ -17,6 +17,7 @@ struct ProductDetailScreen: View {
     @State private var isShowingMoreDetails = false
     @State private var allSizes = ProductSize.allCases
     @State private var selectedDetailsTab: DetailsInformationTab = .descriptions
+    @State private var isShowingFullscreenImage = false
     private var detailsTab = DetailsInformationTab.allCases
     
     @State private var detailsHeight: CGFloat = 400
@@ -54,6 +55,9 @@ struct ProductDetailScreen: View {
                                             .frame(width: .infinity, height: .infinity)
                                     }
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .onTapGesture {
+                                        self.isShowingFullscreenImage = true
+                                    }
                                 }
                             }
                             .tabViewStyle(PageTabViewStyle())
@@ -281,6 +285,9 @@ struct ProductDetailScreen: View {
             }
             .presentationDetents([.medium, .large])
             .padding()
+        })
+        .sheet(isPresented: $isShowingFullscreenImage, content: {
+            FullscreenImagePreview(imageUrls: selectedProduct?.carouselImageUrls ?? [])
         })
         .navigationBarBackButtonHidden()
     }

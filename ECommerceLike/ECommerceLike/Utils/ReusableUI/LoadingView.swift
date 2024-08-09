@@ -14,12 +14,14 @@ struct LoadingView: View {
         VStack(alignment: .center, spacing: 16) {
             VStack(alignment: .center, spacing: 24) {
                 ProgressView()
+                    .colorInvert()
                     .scaleEffect(1.5)
                 Text(searchText)
                     .font(.footnote)
             }
+            .foregroundStyle(.black)
             .padding(20)
-            .background(Color.dynamic(light: .white, dark: .gray.opacity(0.5)))
+            .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
