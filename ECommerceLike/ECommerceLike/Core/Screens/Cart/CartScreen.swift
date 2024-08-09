@@ -71,7 +71,10 @@ struct CartScreen: View {
                                             .font(.subheadline)
                                             .fontWeight(.light)
                                     }
-                                    
+                                    Text(item.selectedSize.rawValue)
+                                        .lineLimit(1)
+                                        .font(.subheadline)
+                                        .fontWeight(.regular)
                                 }
                             }
                             .padding(.horizontal, 16)
