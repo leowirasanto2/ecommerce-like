@@ -21,6 +21,8 @@ struct ContentView: View {
                         }
                     case .productDetail(let selectedProduct):
                         ProductDetailScreen(selectedProduct: selectedProduct)
+                    case .cartScreen:
+                        CartScreen()
                     }
                 }
         }

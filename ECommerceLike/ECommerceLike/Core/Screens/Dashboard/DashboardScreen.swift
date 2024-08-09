@@ -19,7 +19,11 @@ struct DashboardScreen: View {
         GeometryReader { geo in
             ScrollView {
                 VStack(spacing: 32) {
-                    DashboardHeaderView()
+                    DashboardHeaderView(notificationTapped: {
+                        //
+                    }, cartTapped: {
+                        router.navigateTo(.cartScreen)
+                    })
                         .padding(.horizontal)
                     
                     DashboardSearchView { withFilter in

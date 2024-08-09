@@ -10,7 +10,6 @@ import SwiftUI
 typealias GenericNavBarButtonConfig = (Image, () -> ())
 
 struct GenericNavbar: View {
-    @Environment(\.colorScheme) var colorScheme
     var iconSize: CGFloat = 38 //38 is default
     var title: String?
     var leftButton: GenericNavBarButtonConfig?

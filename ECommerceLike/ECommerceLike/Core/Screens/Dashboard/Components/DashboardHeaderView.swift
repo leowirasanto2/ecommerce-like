@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DashboardHeaderView: View {
     @State private var avatarSize: CGFloat = 38
+    var notificationTapped: () -> ()
+    var cartTapped: () -> ()
     
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
@@ -36,7 +38,7 @@ struct DashboardHeaderView: View {
             Spacer()
             
             Button {
-                
+                notificationTapped()
             } label: {
                 Circle()
                     .strokeBorder(.gray)
@@ -50,13 +52,13 @@ struct DashboardHeaderView: View {
             .foregroundStyle(Color.dynamic(light: .black, dark: .white))
             
             Button {
-                
+                cartTapped()
             } label: {
                 Circle()
                     .strokeBorder(.gray)
                     .fill(.clear)
                     .background {
-                        Image(systemName: "person")
+                        Image(systemName: "cart")
                             .imageScale(.large)
                     }
                     .frame(width: avatarSize, height: avatarSize)
@@ -67,5 +69,8 @@ struct DashboardHeaderView: View {
 }
 
 #Preview {
-    DashboardHeaderView()
+    DashboardHeaderView {
+    } cartTapped: {
+    }
+
 }

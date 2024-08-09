@@ -55,7 +55,7 @@ struct SearchScreen: View {
                 
                 // Loader
                 if isSearching {
-                    LoadingView(searchText: "Searching, please wait...")
+                    LoadingView(loadingText: "Searching, please wait...")
                 }
             }
         }

@@ -12,6 +12,7 @@ struct ProductDetailScreen: View {
     @State var iconSize: CGFloat = 38
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var router: Router
     @State private var selectedSize: ProductSize = .L
     @State private var isLoading = false
     @State private var isShowingMoreDetails = false
@@ -228,6 +229,7 @@ struct ProductDetailScreen: View {
                                     isLoading = true
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         self.isLoading = false
+                                        self.router.navigateTo(.cartScreen)
                                     }
                                 } label: {
                                     Text("Add to cart")
@@ -266,7 +268,7 @@ struct ProductDetailScreen: View {
                 }
                 
                 if isLoading {
-                    LoadingView(searchText: "Fetching product details...")
+                    LoadingView(loadingText: "Fetching product details...")
                 }
             }
         }
@@ -322,6 +324,7 @@ struct ProductDetailScreen: View {
 
 #Preview {
     ProductDetailScreen(selectedProduct: .dummyData.first)
+        .environmentObject(Router())
 }
 
 extension ProductDetailScreen {

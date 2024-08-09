@@ -112,8 +112,8 @@ extension Product {
         .init(
             name: "Be Enough For Yourself Sticker",
             imageUrl: "https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/c08423f2-fd4b-4695-8ac0-6ebfaac41d5f/nike-lookbook.jpg",
-            price: 67000,
-            discountPrice: 60000,
+            price: 76,
+            discountPrice: 70,
             brand: .dummyBrands[1],
             details: .dummyDetails,
             availableSize: [.L, .M, .XL],
@@ -126,7 +126,7 @@ extension Product {
         .init(
             name: "Oceanography: Koi Fish Long Sleeve Tee",
             imageUrl: "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/393058/01/mod02/fnd/IDN/fmt/png/Sepatu-Sneaker-Wanita-Mayze-Stack-Fashion",
-            price: 414000,
+            price: 41,
             brand: .dummyBrands[2],
             details: .dummyDetails,
             availableSize: [.M, .L, .XL, .XXL],
@@ -138,7 +138,7 @@ extension Product {
         .init(
             name: "Oceanography: Jelly Fish Long Sleeve Tee",
             imageUrl: "https://media.voguebusiness.com/photos/63daa21650fb254a8de71041/2:3/w_2560%2Cc_limit/adidas-launch-voguebus-photographer-month-22-story.jpg",
-            price: 414000,
+            price: 24,
             brand: .dummyBrands[3],
             details: .dummyDetails,
             availableSize: [.M, .L, .XL, .XXL],
@@ -151,7 +151,7 @@ extension Product {
         .init(
             name: "Variegated Monstera Beanie",
             imageUrl: "https://dummyapparelco.com/cdn/shop/files/E8C37CD9-8AA9-4483-AFF9-CF4A2C80B3AC_590x.jpg?v=1707074145",
-            price: 414000,
+            price: 77,
             brand: .dummyBrands[4],
             details: .dummyDetails,
             availableSize: [.L, .M, .XL],
@@ -163,7 +163,7 @@ extension Product {
         .init(
             name: "Persimmon Tee",
             imageUrl: "https://dummyapparelco.com/cdn/shop/files/8D4AA253-75D9-4AEE-A1A5-48BE45A5BB7A_590x.jpg?v=1717875969",
-            price: 497000,
+            price: 89,
             brand: .dummyBrands[5],
             details: .dummyDetails,
             availableSize: [.M, .L, .XL, .XXL],

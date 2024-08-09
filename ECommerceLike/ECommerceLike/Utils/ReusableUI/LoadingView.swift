@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoadingView: View {
-    var searchText: String
+    var loadingText: String
     
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
@@ -16,7 +16,7 @@ struct LoadingView: View {
                 ProgressView()
                     .colorInvert()
                     .scaleEffect(1.5)
-                Text(searchText)
+                Text(loadingText)
                     .font(.footnote)
             }
             .foregroundStyle(.black)
@@ -30,5 +30,5 @@ struct LoadingView: View {
 }
 
 #Preview {
-    LoadingView(searchText: "Loading, please wait...")
+    LoadingView(loadingText: "Loading, please wait...")
 }

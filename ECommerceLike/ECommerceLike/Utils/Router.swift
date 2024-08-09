@@ -12,6 +12,7 @@ final class Router: ObservableObject {
     public enum Destination: Codable, Hashable {
         case searchScreen(showFilter: Bool)
         case productDetail(selectedProduct: Product)
+        case cartScreen
     }
     
     @Published var navigationPath = NavigationPath()
