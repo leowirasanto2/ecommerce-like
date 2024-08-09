@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProductDescView: View {
-    var descriptionContents: [ProductDescriptionItem] = []
+    var descriptionContents: [ProductDescriptions] = []
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             ForEach(descriptionContents, id: \.id) { item in
@@ -17,7 +17,7 @@ struct ProductDescView: View {
         }
     }
     
-    private func descItemView(_ item: ProductDescriptionItem) -> some View {
+    private func descItemView(_ item: ProductDescriptions) -> some View {
         return VStack(alignment: .leading, spacing: 8) {
             if let title = item.title {
                 Text(title)
@@ -35,6 +35,6 @@ struct ProductDescView: View {
 
 #Preview {
     ProductDescView(
-        descriptionContents: ProductDescriptionItem.dummyDesc1
+        descriptionContents: ProductDescriptions.dummyDesc
     )
 }

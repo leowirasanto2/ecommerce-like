@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct Product {
+struct Product: Codable, Hashable {
     var id = UUID().uuidString
     var name: String
     var imageUrl: String
     var price: Double
+    var discountPrice: Double?
     var brand: Brand?
     var details: ProductDetails?
     var availableSize: [ProductSize] = []
@@ -25,13 +26,13 @@ struct Product {
     }
 }
 
-struct ProductDetails {
+struct ProductDetails: Codable, Hashable {
     var descriptions: [ProductDescriptions] = []
     var reviews: [ProductReviews] = []
     var sizeGuides: [ProductSizeGuides] = []
 }
 
-enum DetailsInformationTab: Int {
+enum DetailsInformationTab: Int, CaseIterable, Codable {
     case descriptions = 0
     case reviews = 1
     case sizeGuides = 2
@@ -48,25 +49,25 @@ enum DetailsInformationTab: Int {
     }
 }
 
-struct ProductDescriptions {
+struct ProductDescriptions: Codable, Hashable {
     var id = UUID().uuidString
     var title: String?
     var content: String
 }
 
-struct ProductReviews {
+struct ProductReviews: Codable, Hashable {
     var id = UUID().uuidString
     var curatorName: String
     var comment: String
 }
 
-struct ProductSizeGuides {
+struct ProductSizeGuides: Codable, Hashable {
     var id = UUID().uuidString
     var title: String?
     var contentDescription: String
 }
 
-enum ProductSize: String, CaseIterable, Hashable {
+enum ProductSize: String, CaseIterable, Hashable, Codable {
     case S = "S"
     case M = "M"
     case L = "L"

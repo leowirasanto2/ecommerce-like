@@ -44,7 +44,7 @@ struct SearchScreen: View {
                                     .font(.subheadline)
                                 
                                 SearchResultView(products: searchResult, screenSize: geo.size) { product in
-                                    router.navigateTo(.productDetail(productId: product.id))
+                                    router.navigateTo(.productDetail(selectedProduct: product))
                                 }
                             }
                             .padding()

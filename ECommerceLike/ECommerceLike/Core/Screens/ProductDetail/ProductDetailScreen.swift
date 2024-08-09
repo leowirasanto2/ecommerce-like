@@ -8,22 +8,21 @@
 import SwiftUI
 
 struct ProductDetailScreen: View {
+    var selectedProduct: Product?
     @State var iconSize: CGFloat = 38
     @Environment(\.dismiss) var dismiss
-    @State private var selectedSize = ""
-    @State private var selectedDetailsTab = "Descriptions"
+    @State private var selectedSize: ProductSize = .L
     @State private var isLoading = false
     @State private var isShowingMoreDetails = false
-    private var imageCarouselData = [Color.red, Color.green, Color.blue, Color.brown]
-    private var sizes = ["S", "M", "L", "XL", "XXL"]
-    private var detailsTab = ["Descriptions", "Reviews", "Size Guides"]
-    private var detailsTabContent = [
-        ProductDetailScreen.productDesc,
-        ProductDetailScreen.productReview,
-        ProductDetailScreen.productSizeGuide
-    ]
+    @State private var allSizes = ProductSize.allCases
+    @State private var selectedDetailsTab: DetailsInformationTab = .descriptions
+    private var detailsTab = DetailsInformationTab.allCases
     
     @State private var detailsHeight: CGFloat = 400
+    
+    init(selectedProduct: Product? = nil) {
+        self.selectedProduct = selectedProduct
+    }
     
     var body: some View {
         GeometryReader { geo in
@@ -46,44 +45,55 @@ struct ProductDetailScreen: View {
                             
                             // Image carousel
                             TabView {
-                                ForEach(imageCarouselData, id: \.self) { item in
-                                    Text("Product image slide")
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        .background(item)
+                                ForEach(selectedProduct?.carouselImageUrls ?? [], id: \.self) { item in
+                                    AsyncImage(url: URL(string: item)) { img in
+                                        img.image?
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: .infinity, height: .infinity)
+                                    }
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 }
                             }
                             .tabViewStyle(PageTabViewStyle())
                             .frame(height: geo.size.height * 0.3)
-                            .background(.gray)
+                            .background(.gray.opacity(0.1))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal)
                             
                             // Price
                             
                             HStack {
-                                Text("$48")
-                                    .font(.headline)
-                                
-                                Text("$51")
-                                    .font(.subheadline)
-                                    .fontWeight(.regular)
-                                    .strikethrough()
-                                    .foregroundStyle(.gray)
+                                if let discountPrice = selectedProduct?.discountPrice {
+                                    Text("$\(discountPrice)")
+                                        .font(.headline)
+                                    
+                                    Text("$\(selectedProduct?.price ?? 0.0)")
+                                        .font(.subheadline)
+                                        .fontWeight(.regular)
+                                        .strikethrough()
+                                        .foregroundStyle(.gray)
+                                    
+                                    Spacer()
+                                    
+                                    Text("20% off")
+                                        .font(.subheadline)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(.green)
+                                        .padding(4)
+                                        .background(.green.opacity(0.3))
+                                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                                } else {
+                                    Text("$\(selectedProduct?.price ?? 0.0)")
+                                        .font(.headline)
+                                }
                                 
                                 Spacer()
-                                
-                                Text("20% off")
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.green)
-                                    .padding(4)
-                                    .background(.green.opacity(0.3))
-                                    .clipShape(RoundedRectangle(cornerRadius: 5))
                             }
                             .padding(.horizontal)
                             
                             // Product name
-                            Text("Product name here with max 2 lines")
+                            Text(selectedProduct?.name ?? "")
                                 .font(.headline)
                                 .fontWeight(.medium)
                                 .frame(width: .infinity, alignment: .leading)
@@ -93,7 +103,7 @@ struct ProductDetailScreen: View {
                             
                             // Brand
                             HStack(alignment: .center, spacing: 16) {
-                                AsyncImage(url: URL(string: Brand.dummyBrands[1].imageUrl ?? "")) { image in
+                                AsyncImage(url: URL(string: selectedProduct?.brand?.imageUrl ?? "")) { image in
                                     image.image?.resizable()
                                         .scaledToFill()
                                         .frame(width: .infinity, height: .infinity)
@@ -102,7 +112,7 @@ struct ProductDetailScreen: View {
                                 }
                                 .frame(width: 30, height: 30)
                                 
-                                Text("Nike")
+                                Text(selectedProduct?.brand?.name ?? "")
                                     .fontWeight(.regular)
                                     .foregroundStyle(.gray)
                                 
@@ -117,17 +127,19 @@ struct ProductDetailScreen: View {
                                     .fontWeight(.semibold)
                                 
                                 HStack(alignment: .center, spacing: 16) {
-                                    ForEach(sizes, id: \.self) { item in
+                                    ForEach(allSizes, id: \.self) { item in
                                         Button {
                                             selectedSize = item
                                         } label: {
-                                            Text(item)
+                                            Text(item.rawValue)
+                                                .font(.caption)
                                                 .padding(.horizontal, 16)
                                                 .padding(.vertical, 8)
-                                                .background(item == selectedSize ? .black : .gray.opacity(0.1))
+                                                .background(sizeButtonBackgroundColor(item))
                                         }
+                                        .disabled(selectedProduct?.availableSize.contains(item) == false)
                                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .foregroundStyle(item == selectedSize ? .white : .black)
+                                        .foregroundStyle(sizeButtonForegroundColor(item))
                                     }
                                 }
                             }
@@ -142,7 +154,7 @@ struct ProductDetailScreen: View {
                                             }
                                         } label: {
                                             VStack {
-                                                Text(item)
+                                                Text(item.title)
                                                 Rectangle()
                                                     .fill(item == selectedDetailsTab ? .black : .gray.opacity(0.2))
                                                     .frame(height: 1)
@@ -154,10 +166,10 @@ struct ProductDetailScreen: View {
                                 }
                                 
                                 TabView(selection: $selectedDetailsTab) {
-                                    ForEach(detailsTabContent, id: \.self) { item in
-                                        if getProductDetailsTag(item) == "Descriptions" {
+                                    ForEach(detailsTab, id: \.self) { item in
+                                        if let content = selectedProduct?.details?.descriptions, !content.isEmpty, item == .descriptions {
                                             VStack {
-                                                ProductDescView(descriptionContents: ProductDescriptionItem.dummyDesc1)
+                                                ProductDescView(descriptionContents: content)
                                                 
                                                 Button {
                                                     isShowingMoreDetails.toggle()
@@ -167,10 +179,10 @@ struct ProductDetailScreen: View {
                                                         .padding()
                                                 }
                                             }
-                                            .tag("Descriptions")
-                                        } else if getProductDetailsTag(item) == "Reviews" {
+                                            .tag(item)
+                                        } else if let content = selectedProduct?.details?.reviews, !content.isEmpty, item == .reviews {
                                             VStack {
-                                                ProductReviewView(reviews: ProductReviews.dummyReviews)
+                                                ProductReviewView(reviews: content)
                                                 
                                                 Button {
                                                     isShowingMoreDetails.toggle()
@@ -180,8 +192,8 @@ struct ProductDetailScreen: View {
                                                         .padding()
                                                 }
                                             }
-                                            .tag("Reviews")
-                                        } else {
+                                            .tag(item)
+                                        } else if let content = selectedProduct?.details?.sizeGuides, !content.isEmpty, item == .sizeGuides {
                                             VStack {
                                                 ProductSizeGuideView()
                                                 
@@ -193,7 +205,9 @@ struct ProductDetailScreen: View {
                                                         .padding()
                                                 }
                                             }
-                                            .tag("Size Guides")
+                                            .tag(item)
+                                        } else {
+                                            AnyView(EmptyView())
                                         }
                                     }
                                 }
@@ -252,10 +266,10 @@ struct ProductDetailScreen: View {
                     .frame(width: 40, height: 4)
                 ScrollView {
                     switch selectedDetailsTab {
-                    case "Descriptions":
-                        ProductDescView(descriptionContents: ProductDescriptionItem.dummyDesc1)
-                    case "Reviews":
-                        ProductReviewView(reviews: ProductReviews.dummyReviews)
+                    case .descriptions:
+                        ProductDescView(descriptionContents: selectedProduct?.details?.descriptions ?? [])
+                    case .reviews:
+                        ProductReviewView(reviews: selectedProduct?.details?.reviews ?? [])
                     default:
                         ProductSizeGuideView()
                     }
@@ -267,19 +281,29 @@ struct ProductDetailScreen: View {
         .navigationBarBackButtonHidden()
     }
     
-    private func getProductDetailsTag(_ selected: String) -> String {
-        if selected == ProductDetailScreen.productDesc {
-            return "Descriptions"
-        } else if selected == ProductDetailScreen.productReview {
-            return "Reviews"
+    private func sizeButtonBackgroundColor(_ itemSize: ProductSize) -> Color {
+        if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
+            return .black.opacity(0.2)
+        } else if selectedSize == itemSize {
+            return .black
         } else {
-            return "Size Guides"
+            return .gray.opacity(0.1)
+        }
+    }
+    
+    private func sizeButtonForegroundColor(_ itemSize: ProductSize) -> Color {
+        if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
+            return .black.opacity(0.3)
+        } else if selectedSize == itemSize {
+            return .white
+        } else {
+            return .black
         }
     }
 }
 
 #Preview {
-    ProductDetailScreen()
+    ProductDetailScreen(selectedProduct: .dummyData.first)
 }
 
 extension ProductDetailScreen {

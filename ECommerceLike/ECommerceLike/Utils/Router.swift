@@ -11,7 +11,7 @@ import SwiftUI
 final class Router: ObservableObject {
     public enum Destination: Codable, Hashable {
         case searchScreen(showFilter: Bool)
-        case productDetail(productId: String)
+        case productDetail(selectedProduct: Product)
     }
     
     @Published var navigationPath = NavigationPath()

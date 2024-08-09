@@ -19,8 +19,8 @@ struct ContentView: View {
                         SearchScreen(initialState: .focused, showFilter: showFilter) {
                             router.back()
                         }
-                    case .productDetail(let productId):
-                        ProductDetailScreen()
+                    case .productDetail(let selectedProduct):
+                        ProductDetailScreen(selectedProduct: selectedProduct)
                     }
                 }
         }
