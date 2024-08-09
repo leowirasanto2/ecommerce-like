@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProductReviewView: View {
-    var reviews: [ProductReview] = []
+    var reviews: [ProductReviews] = []
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -31,7 +31,7 @@ struct ProductReviewView: View {
 
 #Preview {
     ProductReviewView(
-        reviews: ProductReview.dummyReviews
+        reviews: ProductReviews.dummyReviews
     )
 }
 

@@ -170,7 +170,7 @@ struct ProductDetailScreen: View {
                                             .tag("Descriptions")
                                         } else if getProductDetailsTag(item) == "Reviews" {
                                             VStack {
-                                                ProductReviewView(reviews: ProductReview.dummyReviews)
+                                                ProductReviewView(reviews: ProductReviews.dummyReviews)
                                                 
                                                 Button {
                                                     isShowingMoreDetails.toggle()
@@ -255,7 +255,7 @@ struct ProductDetailScreen: View {
                     case "Descriptions":
                         ProductDescView(descriptionContents: ProductDescriptionItem.dummyDesc1)
                     case "Reviews":
-                        ProductReviewView(reviews: ProductReview.dummyReviews)
+                        ProductReviewView(reviews: ProductReviews.dummyReviews)
                     default:
                         ProductSizeGuideView()
                     }
@@ -288,11 +288,4 @@ extension ProductDetailScreen {
     static var productReview = "5 stars"
     
     static var productSizeGuide = "Hi! This is the size guide"
-}
-
-struct ViewHeightKey: PreferenceKey {
-    static var defaultValue: CGFloat = .zero
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
 }
