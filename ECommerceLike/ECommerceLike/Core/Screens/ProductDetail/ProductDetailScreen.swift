@@ -159,12 +159,12 @@ struct ProductDetailScreen: View {
                                             VStack {
                                                 Text(item.title)
                                                 Rectangle()
-                                                    .fill(item == selectedDetailsTab ? (colorScheme == .dark ? .white : .black) : .gray.opacity(colorScheme == .dark ? 0.8 : 0.2))
+                                                    .fill(item == selectedDetailsTab ? (Color.dynamic(light: .black, dark: .white)) : .gray.opacity(colorScheme == .dark ? 0.8 : 0.2))
                                                     .frame(height: 1)
                                             }
                                             .frame(maxWidth: .infinity)
                                         }
-                                        .foregroundStyle(colorScheme == .dark ? .white : .black)
+                                        .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                                     }
                                 }
                                 
@@ -253,7 +253,7 @@ struct ProductDetailScreen: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(colorScheme == .dark ? .white : .black, lineWidth: 1)
+                                        .stroke(Color.dynamic(light: .black, dark: .white), lineWidth: 1)
                                 }
                             }
                             .padding(.horizontal)
@@ -287,17 +287,17 @@ struct ProductDetailScreen: View {
     
     private func sizeButtonBackgroundColor(_ itemSize: ProductSize) -> Color {
         if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
-            return colorScheme == .dark ? .gray.opacity(0.5) : .black.opacity(0.2)
+            return .dynamic(light: .black.opacity(0.2), dark: .gray.opacity(0.5))
         } else if selectedSize == itemSize {
-            return colorScheme == .dark ? .green : .black
+            return .dynamic(light: .black, dark: .green)
         } else {
-            return colorScheme == .dark ? .gray : .gray.opacity(0.1)
+            return .dynamic(light: .gray.opacity(0.1), dark: .gray)
         }
     }
     
     private func sizeButtonForegroundColor(_ itemSize: ProductSize) -> Color {
         if let availableSize = selectedProduct?.availableSize, !availableSize.contains(itemSize) {
-            return colorScheme == .dark ? .white : .black.opacity(0.3)
+            return .dynamic(light: .black.opacity(0.3), dark: .white)
         } else if selectedSize == itemSize {
             return .white
         } else {

@@ -31,7 +31,7 @@ struct GenericNavbar: View {
                         }
                         .frame(width: iconSize, height: iconSize)
                 }
-                .foregroundStyle(colorScheme == .dark ? .white : .black)
+                .foregroundStyle(Color.dynamic(light: .black, dark: .white))
                 Spacer()
             }
             
@@ -55,7 +55,7 @@ struct GenericNavbar: View {
                         }
                         .frame(width: iconSize, height: iconSize)
                 }
-                .foregroundStyle(colorScheme == .dark ? .white : .black)
+                .foregroundStyle(Color.dynamic(light: .black, dark: .white))
             }
         }
         .padding()
