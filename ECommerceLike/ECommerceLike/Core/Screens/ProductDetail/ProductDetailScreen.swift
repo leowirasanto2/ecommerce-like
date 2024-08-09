@@ -13,6 +13,7 @@ struct ProductDetailScreen: View {
     @State private var selectedSize = ""
     @State private var selectedDetailsTab = "Descriptions"
     @State private var isLoading = false
+    @State private var isShowingMoreDetails = false
     private var imageCarouselData = [Color.red, Color.green, Color.blue, Color.brown]
     private var sizes = ["S", "M", "L", "XL", "XXL"]
     private var detailsTab = ["Descriptions", "Reviews", "Size Guides"]
@@ -21,6 +22,8 @@ struct ProductDetailScreen: View {
         ProductDetailScreen.productReview,
         ProductDetailScreen.productSizeGuide
     ]
+    
+    @State private var detailsHeight: CGFloat = 400
     
     var body: some View {
         GeometryReader { geo in
@@ -130,7 +133,7 @@ struct ProductDetailScreen: View {
                             }
                             .padding(.horizontal)
                             
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: 16) {
                                 HStack(alignment: .center, spacing: 0) {
                                     ForEach(detailsTab, id: \.self) { item in
                                         Button {
@@ -152,13 +155,50 @@ struct ProductDetailScreen: View {
                                 
                                 TabView(selection: $selectedDetailsTab) {
                                     ForEach(detailsTabContent, id: \.self) { item in
-                                        Text(item)
-                                            .font(.callout)
-                                            .fontWeight(.light).tag(getProductDetailsTag(item))
+                                        if getProductDetailsTag(item) == "Descriptions" {
+                                            VStack {
+                                                ProductDescView(descriptionContents: ProductDescriptionItem.dummyDesc1)
+                                                
+                                                Button {
+                                                    isShowingMoreDetails.toggle()
+                                                } label: {
+                                                    Text("View more")
+                                                        .font(.subheadline)
+                                                        .padding()
+                                                }
+                                            }
+                                            .tag("Descriptions")
+                                        } else if getProductDetailsTag(item) == "Reviews" {
+                                            VStack {
+                                                ProductReviewView(reviews: ProductReview.dummyReviews)
+                                                
+                                                Button {
+                                                    isShowingMoreDetails.toggle()
+                                                } label: {
+                                                    Text("View more")
+                                                        .font(.subheadline)
+                                                        .padding()
+                                                }
+                                            }
+                                            .tag("Reviews")
+                                        } else {
+                                            VStack {
+                                                ProductSizeGuideView()
+                                                
+                                                Button {
+                                                    isShowingMoreDetails.toggle()
+                                                } label: {
+                                                    Text("View more")
+                                                        .font(.subheadline)
+                                                        .padding()
+                                                }
+                                            }
+                                            .tag("Size Guides")
+                                        }
                                     }
                                 }
-                                .tabViewStyle(PageTabViewStyle())
-                                .frame(height: 200, alignment: .top)
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                                .frame(height: detailsHeight, alignment: .top)
                             }
                             .padding(.horizontal)
                             
@@ -205,6 +245,25 @@ struct ProductDetailScreen: View {
                 }
             }
         }
+        .sheet(isPresented: $isShowingMoreDetails, content: {
+            VStack(spacing: 16) {
+                RoundedRectangle(cornerRadius: 25.0)
+                    .fill(.gray)
+                    .frame(width: 40, height: 4)
+                ScrollView {
+                    switch selectedDetailsTab {
+                    case "Descriptions":
+                        ProductDescView(descriptionContents: ProductDescriptionItem.dummyDesc1)
+                    case "Reviews":
+                        ProductReviewView(reviews: ProductReview.dummyReviews)
+                    default:
+                        ProductSizeGuideView()
+                    }
+                }
+            }
+            .presentationDetents([.medium])
+            .padding()
+        })
         .navigationBarBackButtonHidden()
     }
     
@@ -229,4 +288,11 @@ extension ProductDetailScreen {
     static var productReview = "5 stars"
     
     static var productSizeGuide = "Hi! This is the size guide"
+}
+
+struct ViewHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
 }
